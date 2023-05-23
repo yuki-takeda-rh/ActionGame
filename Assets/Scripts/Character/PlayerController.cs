@@ -6,14 +6,10 @@ public class PlayerController : CharacterController
 {
     private InputSystem input = default;
 
-    [SerializeField]
-    private Vector2 _player_scale = default;
-    [SerializeField]
-    private float _player_tall;
-
     private void Awake()
     {
         input = new InputSystem();
+        SetValue();
     }
 
     protected override void Update()
@@ -21,6 +17,11 @@ public class PlayerController : CharacterController
         Input();
 
         base.Update();
+    }
+
+    private void SetValue()
+    {
+        _character_id = (int)GameManager.character_id.Player;
     }
 
     private void Input()

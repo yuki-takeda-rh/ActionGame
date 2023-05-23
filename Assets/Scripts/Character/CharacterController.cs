@@ -7,10 +7,13 @@ public class CharacterController : MonoBehaviour
     private Rigidbody2D rb = default;
     private Animator anim = default;
     private SpriteRenderer sprite = default;
+    private CharacterDataManager dataManager = default;
 
     protected Vector2 _move_vector = default;
 
     protected bool _isGround = default;
+
+    protected int _character_id = default;
 
     //ê≥èÌîªíË----------------------------
 
@@ -19,6 +22,8 @@ public class CharacterController : MonoBehaviour
 
     //parameteor--------------------------
 
+    protected float _life = 100;
+    protected float _attack_power = 10;
     protected float _speed = 10;
     protected float _jump_power = 20;
 
@@ -29,6 +34,7 @@ public class CharacterController : MonoBehaviour
     }
 
     //input-------------------------------
+
     protected float _chara_move_direction = default;
     protected bool _isJump = default;
 
@@ -37,6 +43,10 @@ public class CharacterController : MonoBehaviour
         TryGetComponent(out rb);
         _canAnimation = TryGetComponent(out anim);
         _canFlip = TryGetComponent(out sprite);
+        if (GameObject.FindWithTag("GameController").TryGetComponent(out dataManager))
+        {
+            SetParameteor();
+        }
     }
 
     protected virtual void Update()
@@ -49,13 +59,20 @@ public class CharacterController : MonoBehaviour
         }
     }
 
+    private void SetParameteor()
+    {
+        _life = float.Parse(dataManager._character_datas[_character_id][2]);
+        _attack_power = float.Parse(dataManager._character_datas[_character_id][3]);
+        _speed = float.Parse(dataManager._character_datas[_character_id][4]);
+        _jump_power = float.Parse(dataManager._character_datas[_character_id][5]);
+    }
+
     protected virtual void Move()
     {
         _move_vector.x = _chara_move_direction * _speed;
 
         if (_isJump && _isGround)
         {
-            Debug.Log(_isJump);
             Jump();
         }
         _move_vector.y = rb.velocity.y;

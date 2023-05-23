@@ -10,12 +10,18 @@ public class EnemyController : CharacterController
 
     private void Awake()
     {
-        _spown_position = transform.position;
+        SetValue();
     }
 
     protected override void Update()
     {
+        Input();
         base.Update();
+    }
+
+    private void SetValue()
+    {
+        _spown_position = transform.position;
     }
 
     private void Input()
@@ -23,6 +29,10 @@ public class EnemyController : CharacterController
         if (transform.position.x - _spown_position.x > _move_distance)
         {
             _chara_move_direction = -1;
+        }
+        else if (transform.position.x - _spown_position.x <= -_move_distance)
+        {
+            _chara_move_direction = 1;
         }
     }
 }
