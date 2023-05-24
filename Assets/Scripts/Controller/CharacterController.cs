@@ -12,8 +12,7 @@ public class CharacterController : MonoBehaviour
     protected Vector2 _move_vector = default;
 
     protected bool _isGround = default;
-    protected bool _isDeath = default;
-
+    public bool _isDeath { get; protected set; } = default;
     protected int _character_id = default;
 
     protected string _my_enemy_tag = default;
@@ -81,8 +80,10 @@ public class CharacterController : MonoBehaviour
 
     protected virtual void Move()
     {
-        _move_vector.x = _chara_move_direction * _speed;
-
+        if (!Physics2D.BoxCast(transform.position, new Vector2(0, 2), 0, new Vector2(_chara_move_direction, 0), 0.5f))
+        {
+            _move_vector.x = _chara_move_direction * _speed;
+        }
         if (_isJump && _isGround)
         {
             Jump();
@@ -118,7 +119,8 @@ public class CharacterController : MonoBehaviour
     public void Death()
     {
         _isDeath = true;
-        anim.SetBool("isDead", _isDeath);
+        anim.SetTrigger("IsDeath");
+
     }
 
     // TODO:CharacterAnimationController‚ÅŽÀ‘•
@@ -131,11 +133,9 @@ public class CharacterController : MonoBehaviour
         anim.SetBool("isOnGround", _isGround);
     }
 
-    //TODO:AnimationEvent‚ðŽg‚í‚È‚¢‚ÅŽÀ‘•‚·‚é
-    public void DeathAnimation()
+    public void OnDestroy()
     {
         gameObject.SetActive(false);
-        GameManager.Instance.GameOver();
     }
 
     // TODO:Boxcast‚ÅŽÀ‘•

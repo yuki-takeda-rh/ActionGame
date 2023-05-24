@@ -37,7 +37,7 @@ public class EnemyController : CharacterController
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == _my_enemy_tag)
+        if (collision.gameObject.tag == _my_enemy_tag && !_isDeath)
         {
             collision.gameObject.GetComponent<CharacterController>().CharaLifeCalculation(_attack_power);
         }

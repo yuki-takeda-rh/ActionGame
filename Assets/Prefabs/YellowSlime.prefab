@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7906483820726331349}
   - component: {fileID: 4150550510140173446}
   - component: {fileID: 2525229428718054769}
+  - component: {fileID: 4080234535928686714}
   m_Layer: 0
   m_Name: YellowSlime
   m_TagString: Enemy
@@ -31,7 +32,7 @@ Transform:
   m_GameObject: {fileID: 5653006593625104267}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -183,5 +184,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f5cc088ea5897534580fab1e7433d54b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4080234535928686714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5653006593625104267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f518b019eea59f4780d4a1d3690c27e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

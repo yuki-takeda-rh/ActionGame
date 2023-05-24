@@ -41,7 +41,7 @@ public class GameManager
 
     public void GameOver()
     {
-
+        Debug.Log("GameOver");
     }
 
     public void GameClear()
