@@ -1,4 +1,4 @@
 id,name,hp,atk,speed,jump
-1,Player,100,10,10,20
+1,Player,100,10,10,22
 2,RedSlime,10,20,1,10
 3,YellowSlime,10,20,1,10

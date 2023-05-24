@@ -6,20 +6,37 @@ public class GameManager
 {
     private static GameManager _instance = default;
 
-    public enum character_id
+    public enum Character_id
     {
         Player,
         RedSlime,
         YellowSlime
     }
 
-    public static GameManager Instance()
+    public enum GameObject_tag_name
     {
-        if (_instance == null)
-        {
-            _instance = new GameManager();
+        Ground,
+        Token,
+        Player,
+        Enemy,
+    }
+
+    public int _collect_token_count { get; private set; } = default;
+
+    public static GameManager Instance
+    {
+        get{
+            if (_instance == null)
+            {
+                _instance = new GameManager();
+            }
+            return _instance;
         }
-        return _instance;
+    }
+
+    public void GetToken()
+    {
+        _collect_token_count++;
     }
 
     public void GameOver()

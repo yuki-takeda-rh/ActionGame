@@ -12,8 +12,11 @@ public class CharacterController : MonoBehaviour
     protected Vector2 _move_vector = default;
 
     protected bool _isGround = default;
+    protected bool _isDeath = default;
 
     protected int _character_id = default;
+
+    protected string _my_enemy_tag = default;
 
     //ê≥èÌîªíË----------------------------
 
@@ -59,8 +62,17 @@ public class CharacterController : MonoBehaviour
         }
     }
 
+    // TODO:Ç‡Ç¡Ç∆Ç´ÇÍÇ¢Ç…é¿ëï
     private void SetParameteor()
     {
+        if (_character_id == 0)
+        {
+            _my_enemy_tag = GameManager.GameObject_tag_name.Enemy.ToString();
+        }
+        else
+        {
+            _my_enemy_tag = GameManager.GameObject_tag_name.Player.ToString();
+        }
         _life = float.Parse(dataManager._character_datas[_character_id][2]);
         _attack_power = float.Parse(dataManager._character_datas[_character_id][3]);
         _speed = float.Parse(dataManager._character_datas[_character_id][4]);
@@ -85,6 +97,31 @@ public class CharacterController : MonoBehaviour
         rb.AddForce(Vector2.up * _jump_power, ForceMode2D.Impulse);
     }
 
+    protected virtual void Jump(float magnification)
+    {
+        rb.AddForce(Vector2.up * _jump_power * magnification, ForceMode2D.Impulse);
+    }
+
+    public void CharaLifeCalculation(float damage)
+    {
+        if (!_isDeath)
+        {
+            _life -= damage;
+            anim.SetTrigger("hurt");
+            if (_life <= 0)
+            {
+                Death();
+            }
+        }
+    }
+
+    public void Death()
+    {
+        _isDeath = true;
+        anim.SetBool("isDead", _isDeath);
+    }
+
+    // TODO:CharacterAnimationControllerÇ≈é¿ëï
     protected virtual void View()
     {
         sprite.flipX = rb.velocity.x < 0;
@@ -94,9 +131,17 @@ public class CharacterController : MonoBehaviour
         anim.SetBool("isOnGround", _isGround);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    //TODO:AnimationEventÇégÇÌÇ»Ç¢Ç≈é¿ëïÇ∑ÇÈ
+    public void DeathAnimation()
     {
-        if (collision.gameObject.tag == "Ground")
+        gameObject.SetActive(false);
+        GameManager.Instance.GameOver();
+    }
+
+    // TODO:BoxcastÇ≈é¿ëï
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == GameManager.GameObject_tag_name.Ground.ToString())
         {
             _isGround = true;
         }
@@ -104,7 +149,7 @@ public class CharacterController : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Ground")
+        if (collision.gameObject.tag == GameManager.GameObject_tag_name.Ground.ToString())
         {
             _isGround = false;
         }

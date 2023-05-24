@@ -12,7 +12,7 @@ public class CharacterDataManager : MonoBehaviour
 
     private void Awake()
     {
-        csv = Resources.Load<TextAsset>("Game");
+        csv = Resources.Load<TextAsset>("Game - ƒV[ƒg1");
         StringReader reader = new StringReader(csv.text);
         while (reader.Peek() > -1)
         {
@@ -24,6 +24,5 @@ public class CharacterDataManager : MonoBehaviour
             }
             line++;
         }
-        Debug.Log(_character_datas[0][0]);
     }
 }
