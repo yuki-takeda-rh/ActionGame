@@ -10,4 +10,9 @@ public class CharacterAnimationEvent : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+
+    public void FinVictoryAnimation()
+    {
+        GameObject.FindWithTag(GameManager.GameObject_tag_name.GameController.ToString()).GetComponent<StageManager>().StageClear();
+    }
 }

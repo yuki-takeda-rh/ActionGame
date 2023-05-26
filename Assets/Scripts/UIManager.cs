@@ -12,13 +12,21 @@ public class UIManager : MonoBehaviour
     private GameObject SecondPanel = default;
 
     [SerializeField]
-    private Text text = default;
+    private Text all_token_text = default;
+
+    [SerializeField]
+    private Text get_token_text = default;
 
     private void Update()
     {
-        if (text != null)
+        if (all_token_text != null)
         {
-            text.text = "Token: " + GameManager.Instance._collect_all_token_count.ToString() + "ŒÂ";
+            all_token_text.text = "All:    " + GameManager.Instance._collect_all_token_count.ToString() + "ŒÂ";
+        }
+
+        if (get_token_text != null)
+        {
+            get_token_text.text = "       +" + GameManager.Instance._collect_all_token_count.ToString() + "ŒÂ";
         }
     }
 

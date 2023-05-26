@@ -6,6 +6,9 @@ public class EnemyController : CharacterController
 {
     private Vector2 _spown_position = default;
 
+    private bool _isRight = default;
+    private bool _isLeft = default;
+
     private float _move_distance = 2;
 
     protected virtual void Awake()
@@ -15,27 +18,37 @@ public class EnemyController : CharacterController
 
     protected override void Update()
     {
-        //Input();
+        Input();
         base.Update();
     }
 
     private void SetValue()
     {
         _spown_position = transform.position;
+        _isLeft = !_isRight;
     }
 
     private void Input()
     {
-        /*
-        if (transform.position.x - _spown_position.x > _move_distance)
+        if (_spown_position.x - transform.position.x > _move_distance && _isLeft)
         {
-            _chara_move_direction = -1;
+            _isLeft = false;
+            _isRight = true;
         }
-        else if (transform.position.x - _spown_position.x <= -_move_distance)
+        else if (_spown_position.x - transform.position.x < -_move_distance && _isRight)
+        {
+            _isRight = false;
+            _isLeft = true;
+        }
+
+        if (_isRight)
         {
             _chara_move_direction = 1;
         }
-        */
+        else if (_isLeft)
+        {
+            _chara_move_direction = -1;
+        }
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {

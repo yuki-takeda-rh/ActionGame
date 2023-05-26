@@ -5,19 +5,22 @@ using UnityEngine;
 public class CharacterController : MonoBehaviour
 {
     private Rigidbody2D rb = default;
-    private Animator anim = default;
     private SpriteRenderer sprite = default;
     private CharacterDataManager dataManager = default;
+    protected Animator anim = default;
 
     protected Vector2 _move_vector = default;
 
     protected bool _isGround = default;
     public bool _isDeath { get; protected set; } = default;
+
     protected int _character_id = default;
 
     protected string _my_enemy_tag = default;
 
     private const int _groundlayer = 1 << 8;
+
+    protected Vector2 _height_scale = default;
 
     //³í”»’è----------------------------
 
@@ -45,6 +48,7 @@ public class CharacterController : MonoBehaviour
 
     protected virtual void Start()
     {
+        _height_scale = new Vector2(0.1f, transform.localScale.y -0.5f);
         TryGetComponent(out rb);
         _canAnimation = TryGetComponent(out anim);
         _canFlip = TryGetComponent(out sprite);
@@ -86,12 +90,12 @@ public class CharacterController : MonoBehaviour
     // TODO:Boxcast‚ÅŽÀ‘•
     private void Ground()
     {
-        _isGround = Physics2D.BoxCast(transform.position, new Vector2(1, 0.1f), 0, Vector2.down, 0.8f, _groundlayer);
+        _isGround = Physics2D.BoxCast(transform.position, new Vector2(0.8f, 0.1f), 0, Vector2.down, 0.8f, _groundlayer);
     }
 
     protected virtual void Move()
     {
-        if (!Physics2D.BoxCast(transform.position, new Vector2(0.1f, 1.3f), 0, new Vector2(_chara_move_direction, 0), 0.8f, _groundlayer))
+        if (!Physics2D.BoxCast(transform.position, _height_scale, 0, new Vector2(_chara_move_direction, 0), 0.8f, _groundlayer))
         {
             _move_vector.x = _chara_move_direction * _speed;
         }

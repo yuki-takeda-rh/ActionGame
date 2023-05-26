@@ -23,7 +23,7 @@ public class PlayerController : CharacterController
     {
         if (transform.position.y <= -5.7f)
         {
-            Death();
+            stageManager.GameOver();
         }
 
         Input();
@@ -49,30 +49,20 @@ public class PlayerController : CharacterController
             CharacterController col_controller = collision.gameObject.GetComponent<CharacterController>();
             if (!col_controller._isDeath)
             {
-                Jump(1.5f);
+                Jump(0.8f);
                 col_controller.CharaLifeCalculation(_attack_power);
             }
         }
-    }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.tag == GameManager.GameObject_tag_name.Token.ToString())
-        {
-            collision.gameObject.SetActive(false);
-            stageManager.GetToken();
-        }
-
-#if UNITY_EDITOR
         if (collision.gameObject.tag == "GameOver")
         {
             stageManager.GameOver();
         }
         else if (collision.gameObject.tag == "GameClear")
         {
-            stageManager.StageClear();
+            input.Disable();
+            anim.SetTrigger("victory");
         }
-#endif
     }
 
     private void OnEnable()
@@ -87,10 +77,5 @@ public class PlayerController : CharacterController
         {
             stageManager.GameOver();
         }
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawCube((Vector2)transform.position + new Vector2(_chara_move_direction, 0) * 0.8f, new Vector2(0.1f, 1.3f));
     }
 }
