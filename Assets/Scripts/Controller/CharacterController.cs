@@ -17,6 +17,8 @@ public class CharacterController : MonoBehaviour
 
     protected string _my_enemy_tag = default;
 
+    private const int _groundlayer = 1 << 8;
+
     //³í”»’è----------------------------
 
     private bool _canAnimation = default;
@@ -30,6 +32,7 @@ public class CharacterController : MonoBehaviour
     protected float _jump_power = 20;
 
     //geter-------------------------------
+
     public Vector3 _character_vector
     {
         get { return _move_vector; }
@@ -40,7 +43,7 @@ public class CharacterController : MonoBehaviour
     protected float _chara_move_direction = default;
     protected bool _isJump = default;
 
-    private void Start()
+    protected virtual void Start()
     {
         TryGetComponent(out rb);
         _canAnimation = TryGetComponent(out anim);
@@ -53,6 +56,8 @@ public class CharacterController : MonoBehaviour
 
     protected virtual void Update()
     {
+        Ground();
+
         Move();
 
         if (_canAnimation && _canFlip)
@@ -78,12 +83,23 @@ public class CharacterController : MonoBehaviour
         _jump_power = float.Parse(dataManager._character_datas[_character_id][5]);
     }
 
+    // TODO:Boxcast‚ÅŽÀ‘•
+    private void Ground()
+    {
+        _isGround = Physics2D.BoxCast(transform.position, new Vector2(1, 0.1f), 0, Vector2.down, 0.8f, _groundlayer);
+    }
+
     protected virtual void Move()
     {
-        if (!Physics2D.BoxCast(transform.position, new Vector2(0, 2), 0, new Vector2(_chara_move_direction, 0), 0.5f))
+        if (!Physics2D.BoxCast(transform.position, new Vector2(0.1f, 1.3f), 0, new Vector2(_chara_move_direction, 0), 0.8f, _groundlayer))
         {
             _move_vector.x = _chara_move_direction * _speed;
         }
+        else
+        {
+            _move_vector.x = 0;
+        }
+
         if (_isJump && _isGround)
         {
             Jump();
@@ -127,31 +143,9 @@ public class CharacterController : MonoBehaviour
     protected virtual void View()
     {
         sprite.flipX = rb.velocity.x < 0;
-        anim.SetFloat("velocityX", rb.velocity.x);
+        anim.SetFloat("velocityX", _chara_move_direction);
         anim.SetFloat("velocityY", rb.velocity.y);
-        anim.SetBool("isMoving", rb.velocity != Vector2.zero);
+        anim.SetBool("isMoving", rb.velocity != Vector2.zero || _chara_move_direction != 0);
         anim.SetBool("isOnGround", _isGround);
-    }
-
-    public void OnDestroy()
-    {
-        gameObject.SetActive(false);
-    }
-
-    // TODO:Boxcast‚ÅŽÀ‘•
-    protected virtual void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == GameManager.GameObject_tag_name.Ground.ToString())
-        {
-            _isGround = true;
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == GameManager.GameObject_tag_name.Ground.ToString())
-        {
-            _isGround = false;
-        }
     }
 }

@@ -124,9 +124,9 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.16029}
-  m_Size: {x: 0.39328, y: 0.39592}
-  m_Direction: 0
+  m_Offset: {x: 0, y: -0.17}
+  m_Size: {x: 0.5, y: 0.37}
+  m_Direction: 1
 --- !u!61 &7906483820726331349
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -168,7 +168,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 8
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1

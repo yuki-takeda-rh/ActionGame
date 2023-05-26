@@ -15,7 +15,7 @@ public class EnemyController : CharacterController
 
     protected override void Update()
     {
-        Input();
+        //Input();
         base.Update();
     }
 
@@ -26,6 +26,7 @@ public class EnemyController : CharacterController
 
     private void Input()
     {
+        /*
         if (transform.position.x - _spown_position.x > _move_distance)
         {
             _chara_move_direction = -1;
@@ -34,6 +35,7 @@ public class EnemyController : CharacterController
         {
             _chara_move_direction = 1;
         }
+        */
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {

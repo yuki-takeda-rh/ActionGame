@@ -5,11 +5,18 @@ using UnityEngine;
 public class PlayerController : CharacterController
 {
     private InputSystem input = default;
+    private StageManager stageManager = default;
 
     private void Awake()
     {
         input = new InputSystem();
         SetValue();
+    }
+
+    protected override void Start()
+    {
+        GameObject.FindWithTag(GameManager.GameObject_tag_name.GameController.ToString()).TryGetComponent(out stageManager);
+        base.Start();
     }
 
     protected override void Update()
@@ -35,7 +42,7 @@ public class PlayerController : CharacterController
         _isJump = input.InGame.Jump.triggered;
     }
 
-    protected override void OnTriggerEnter2D(Collider2D collision)
+    protected void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == _my_enemy_tag)
         {
@@ -46,17 +53,26 @@ public class PlayerController : CharacterController
                 col_controller.CharaLifeCalculation(_attack_power);
             }
         }
-
-        base.OnTriggerEnter2D(collision);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == GameManager.GameObject_tag_name.Token.ToString())
         {
-            GameManager.Instance.GetToken();
             collision.gameObject.SetActive(false);
+            stageManager.GetToken();
         }
+
+#if UNITY_EDITOR
+        if (collision.gameObject.tag == "GameOver")
+        {
+            stageManager.GameOver();
+        }
+        else if (collision.gameObject.tag == "GameClear")
+        {
+            stageManager.StageClear();
+        }
+#endif
     }
 
     private void OnEnable()
@@ -64,19 +80,17 @@ public class PlayerController : CharacterController
         input.Enable();
     }
 
-    [SerializeField]
-    Vector2 a;
-    [SerializeField]
-    Vector2 b;
-    [SerializeField]
-    float c;
-    [SerializeField]
-    float d;
+    private void OnDisable()
+    {
+        input.Disable();
+        if (_life <= 0)
+        {
+            stageManager.GameOver();
+        }
+    }
 
     private void OnDrawGizmos()
     {
-        bool result = Physics2D.BoxCast(transform.position, a, c, _character_vector / _speed, d);
-        Debug.Log(result);
-        Gizmos.DrawWireCube(transform.position + _character_vector / _speed * d, a);
+        Gizmos.DrawCube((Vector2)transform.position + new Vector2(_chara_move_direction, 0) * 0.8f, new Vector2(0.1f, 1.3f));
     }
 }
